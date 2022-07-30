@@ -7,5 +7,5 @@ The most fundamental things you <b>need</b> to know are:
 - Be patient. Don't give up. Read.
 
 ## Table of contents
-- [Basic concepts](1%20-Basic%20concepts.md)
-- [Basic concepts 2](1%20-Basic%20concepts%202.md)
+- [Basic concepts](1%20-%20Basic%20concepts.md)
+- [Basic concepts 2](1%20-%20Basic%20concepts%202.md)

@@ -6,7 +6,7 @@
 - [Comments](#comments)
 - [Scopes](#scopes)
 
-<a name='#declaring_variables'></a>
+<a name='declaring_variables'></a>
 
 ## Declaring a variable
 
@@ -30,7 +30,7 @@ end
 <i>Don't worry if functions are confusing.
 We will get to them later</i>
 
-<hr/><a name='#data_types'></a>
+<hr/><a name='data_types'></a>
 
 ## Data Types
 
@@ -107,7 +107,7 @@ end
 ```
 As you can see `function <functionName>` is also a syntatic sugar. `foo` and `fooBar` are the same functions as well as `bar` and `barFoo`.
 
-<hr/><a name='#comments'></a>
+<hr/><a name='comments'></a>
 
 ## Comments
 In order to "disable" certain lines from executing you can use comments. Lua ignores both comments and whitelines:
@@ -122,7 +122,7 @@ local PI = 3.14--1245678
 To create a single-line comment use `--`<br/>
 To create a multi--line comment use `--[[` and `]]`
 
-<hr/><a name='#scopes'></a>
+<hr/><a name='scopes'></a>
 
 ## Scopes
 

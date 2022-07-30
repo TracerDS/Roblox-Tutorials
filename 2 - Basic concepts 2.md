@@ -3,7 +3,7 @@
 ## Table of contents
 - [Basic Functions](#basic_functions)
 
-<a href='#basic_functions'></a>
+<a name='#basic_functions'></a>
 
 ## Basic functions
 

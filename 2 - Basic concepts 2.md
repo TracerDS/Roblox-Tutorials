@@ -12,161 +12,113 @@
 
 ## Basic functions
 
-The most common and widely used function is the `print` function. Generally speaking it "prints" the value of whatever you put in it.
+- `assert (v [, message])`<br/><br/>
+Raises an error if the value of its argument `v` is `false` (i.e., `nil` or `false`); otherwise, returns all its arguments. In case of error, message is the error object; when absent, it defaults to "`assertion failed!`"<br/><br/>
+Examples:
 ```lua
-print(5) -- output: 5
-print('Test') -- output: Test
-print(print) -- output: function
-print(true, false) -- output: true  false
-print({1,2,3},{4,5,6},{7,8,9}) -- output: table   table   table
+local isTrue = true
+assert(isTrue, 'Not true ;/') -- no error
+assert(not isTrue, 'Not true!') -- ERROR: Not true!
+```
+<hr/><br/>
+
+- `collectgarbage([opt [, arg]])`<br/><br/>
+This function is a generic interface to the garbage collector. It performs different functions according to its first argument, opt:
+- <b>collect:</b> Performs a full garbage-collection cycle. This is the default option.
+- <b>stop:</b> Stops automatic execution of the garbage collector. The collector will run only when explicitly invoked, until a call to restart it.
+- <b>restart:</b> Restarts automatic execution of the garbage collector.
+- <b>count:</b> Returns the total memory in use by Lua in Kbytes. The value has a fractional part, so that it multiplied by 1024 gives the exact number of bytes in use by Lua.
+- <b>step:</b> Performs a garbage-collection step. The step "size" is controlled by arg. With a zero value, the collector will perform one basic (indivisible) step. For non-zero values, the collector will perform as if that amount of memory (in Kbytes) had been allocated by Lua. Returns true if the step finished a collection cycle.
+- <b>isrunning:</b> Returns a boolean that tells whether the collector is running (i.e., not stopped).
+- <b>incremental:</b> Change the collector mode to incremental. This option can be followed by three numbers: the garbage-collector pause, the step multiplier, and the step size. A zero means to not change that value.
+- <b>generational:</b> Change the collector mode to generational. This option can be followed by two numbers: the garbage-collector minor multiplier and the major multiplier. A zero means to not change that value.<br/><br/>
+<i>More on that later</i>
+
+<hr/><br/>
+
+- `dofile([filename])`<br/><br/>
+Opens the named file and executes its content as a Lua chunk. When called without arguments, `dofile` executes the content of the standard input (`stdin`). Returns all values returned by the chunk. In case of errors, `dofile` propagates the error to its caller. (That is, `dofile` does <b>not</b> run in protected mode.)
+
+<hr/><br/>
+
+- `error(message [, level])`<br/><br/>
+Raises an error with message as the `error` object. This function never returns.
+Usually, `error` adds some information about the error position at the beginning of the message, if the message is a string. The level argument specifies how to get the error position. With level 1 (the default), the error position is where the error function was called. Level 2 points the error to where the function that called error was called; and so on. Passing a level 0 avoids the addition of error position information to the message.
+
+<hr/><br/>
+
+- `_G`<br/><br/>
+A global variable (not a function) that holds the global environment. Lua itself does not use this variable; changing its value does not affect any environment, nor vice versa.
+
+<hr/><br/>
+
+- `ipairs(tbl)`<br/><br/>
+Returns three values (an iterator function, the table `tbl`, and 0) so that the construction will iterate over the key–value pairs (`1,tbl[1]`), (`2,tbl[2]`), ..., up to the first absent index:
+```lua
+for i,v in ipairs(tbl) do --[[ code ]] end
 ```
 
-Another very useful functions are: `pairs` and `ipairs`. Both don't do anything itself but if you use them in `for` loop you can iterate over tables.
-```lua
-local myTable = {5,4,3,2,1}
+<hr/><br/>
 
-for key,value in pairs(myTable) do
-    print(key, value)
+- `load(chunk [, chunkname [, mode [, env]]])`<br/><br/>
+Loads a chunk.<br/>
+If chunk is a string, the chunk is this string. If chunk is a function, load calls it repeatedly to get the chunk pieces. Each call to chunk must return a string that concatenates with previous results. A return of an empty string, nil, or no value signals the end of the chunk.<br/><br/>
+If there are no syntactic errors, load returns the compiled chunk as a function; otherwise, it returns fail plus the error message.<br/><br/>
+When you load a main chunk, the resulting function will always have exactly one upvalue, the _ENV variable. However, when you load a binary chunk created from a function, the resulting function can have an arbitrary number of upvalues, and there is no guarantee that its first upvalue will be the _ENV variable. (A non-main function may not even have an _ENV upvalue.)<br/><br/>
+Regardless, if the resulting function has any upvalues, its first upvalue is set to the value of env, if that parameter is given, or to the value of the global environment. Other upvalues are initialized with nil. All upvalues are fresh, that is, they are not shared with any other function.<br/><br/>
+`chunkname` is used as the name of the chunk for error messages and debug information. When absent, it defaults to chunk, if chunk is a string, or to `"=(load)"` otherwise.<br/><br/>
+The string mode controls whether the chunk can be text or binary (that is, a precompiled chunk). It may be the string "b" (only binary chunks), "t" (only text chunks), or "bt" (both binary and text). The default is "bt".<br/><br/>
+It is safe to load malformed binary chunks; load signals an appropriate error. However, Lua does not check the consistency of the code inside binary chunks; running maliciously crafted bytecode can crash the interpreter.
+
+<hr/><br/>
+
+- `loadfile([filename [, mode [, env]]])`<br/><br/>
+Similar to load, but gets the chunk from file filename or from the standard input, if no file name is given.
+
+<hr/><br/>
+
+- `next(tbl [, index])`<br/><br/>
+Allows a program to traverse all fields of a table. Its first argument is a table and its second argument is an index in this table. A call to next returns the next index of the table and its associated value. When called with nil as its second argument, next returns an initial index and its associated value. When called with the last index, or with nil in an empty table, next returns nil. If the second argument is absent, then it is interpreted as nil. In particular, you can use `next(tbl)` to check whether a table is empty.<br/><br/>
+The order in which the indices are enumerated is not specified, even for numeric indices (To traverse a table in numerical order, use a numerical for).<br/><br/>
+You should not assign any value to a non-existent field in a table during its traversal. You may however modify existing fields. In particular, you may set existing fields to nil.
+Examples:
+```lua
+local myTable = {5, 12, true, 'key', 'value'}
+
+for i,v in next, myTable do
+    print(i,v)
 end
 
 --[[
-    outputs:
+    output:
     1 5
-    2 4
-    3 3
-    4 2
-    5 1
-]]
-
-for key,value in ipairs(myTable) do
-    print(key, value)
-end
-
---[[
-    outputs:
-    1 5
-    2 4
-    3 3
-    4 2
-    5 1
-]]
-```
-
-There are also 2 more methods to iterate through tables: by using `next` and by using "iterators":
-```lua
-local myTable = {
-    18,3.14,true,false,'test',
-    myKey = 'myValue'
-}
-
-for k,v in next, myTable do
-    print(k,v)
-end
-
---[[
-    output:
-    1 18
-    2 3.14
+    2 12
     3 true
-    4 false
-    5 test
-    myKey myValue
-]]
-
-for k=1, #myTable do
-    print(k,myTable[k])
-end
-
---[[
-    output:
-    1 18
-    2 3.14
-    3 true
-    4 false
-    5 test
+    4 key
+    5 value
 ]]
 ```
-Keep in mind that the second method (iterators) only supports index based tables (arrays). <br/>
-You can also use this method to make a basic "for range" loop:
+
+<hr/><br/>
+
+- `pairs(tbl)`<br/><br/>
+If `tbl` has a metamethod `__pairs`, calls it with `tbl` as argument and returns the first three results from the call.<br/>
+Otherwise, returns three values:
+    - the next function
+    - the table `tbl`
+    - nil<br/>
+    
+    so that the construction will iterate over all key–value pairs of table `tbl`:
 ```lua
-for i=1,5 do
-    print(i)
-end
-
---[[
-    output:
-    1
-    2
-    3
-    4
-    5
-]]
-
-for i=3,0,-1 do
-    print(i)
-end
-
---[[
-    output:
-    3
-    2
-    1
-    0
-]]
-
-for i=0,6,2 do
-    print(i)
-end
-
---[[
-    output:
-    0
-    2
-    4
-    6
-]]
+for k,v in pairs(tbl) do --[[ code ]] end
 ```
-<b>Q:</b> What is the difference between `pairs` and `ipairs`?
-<br/>
-<b>A:</b> `ipairs` doesn't loop through dictionaries while `pairs` loops through everything (both arrays and dictionaries). But it comes at a cost. `ipairs` is faster than `pairs` in looping through arrays.
+See function next for the caveats of modifying the table during its traversal.
 
-To get variable's type use `type` function:
-```lua
-local myVar1 = 'this is a string'
-local myVar2 = 3
-local myVar3 = false
-local myVar4 = {3.14}
-local myVar5 = nil
+<hr/><br/><a name='error_handling'></a>
 
-print(type(myVar1)) -- output: string
-print(type(myVar2)) -- output: number
-print(type(myVar3)) -- output: boolean
-print(type(myVar4)) -- output: table
-print(type(myVar5)) -- output: nil
-```
-
-To convert string to an integer use `tonumber` function:
-```lua
-local numberAsString = '5.89'
-local number = tonumber(numberAsString)
-print(number, type(number)) -- output: 5.89 number
-```
-
-To convert number to string use `tostring` function:
-```lua
-local myNumber = 892
-local myString = tostring(myNumber)
-print(myString, type(myString)) -- output: 892 string
-```
-
-<br/><hr/><a name='error_handling'></a>
-
-## Error Handling
-
-Sometimes you have a bad day. An error is thrown. We need to figure out why and what we can do about it. We need to <b>catch</b> errors. <br/>
-And to do that we will use `pcall` function.
-What is a `pcall`? it is a <b>protected call</b>. Its first result is the status code (a boolean), which is <b>true</b> if the call succeeds without errors.
-In such case, pcall also returns all results from the call, after this first result. In case of any error, pcall returns <b>false</b> plus the error object:
+- `pcall(func [, arg1, ...])`<br/><br/>
+Calls the function `func` with the given arguments in protected mode. This means that any error inside `func` is not propagated; instead, `pcall` catches the error and returns a status code. Its first result is the status code (a boolean), which is true if the call succeeds without errors. In such case, pcall also returns all results from the call, after this first result. In case of any error, pcall returns false plus the error object. Note that errors caught by pcall do not call a message handler.
+Examples:
 ```lua
 function errorFunc(param)
     if not param then error('Parameter not provided!') end
@@ -186,6 +138,109 @@ else
     print(data2) -- output: nil
 end
 ```
+
+<hr/><br/>
+
+- `print(...)`<br/><br/>
+Receives any number of arguments and prints their values to stdout, converting each argument to a string following the same rules of `tostring`.<br/>
+The function print is not intended for formatted output, but only as a quick way to show a value, for instance for debugging. For complete control over the output, use `string.format` and `io.write`.
+
+<hr/><br/>
+
+- `rawequal(v1, v2)`<br/><br/>
+Checks whether v1 is equal to v2, without invoking the `__eq` metamethod.<br/>
+Returns a boolean.
+
+- `rawget(tbl, index)`<br/><br/>
+Gets the real value of `tbl[index]`, without using the `__index` metavalue. `tbl` must be a table; index may be any value.
+
+<hr/><br/>
+
+- `rawlen(v)`<br/><br/>
+Returns the length of the object `v`, which must be a table or a string, without invoking the `__len` metamethod.<br/>
+Returns an integer.
+
+<hr/><br/>
+
+- `rawset(tbl, index, value)`<br/><br/>
+Sets the real value of `tbl[index]` to `value`, without using the `__newindex` metavalue. table must be a table, index any value different from nil and NaN, and value any Lua value.<br/>
+This function returns table.
+
+<hr/><br/>
+
+- `select(index, ...)`<br/><br/>
+If `index` is a number, returns all arguments after argument number index; a negative number indexes from the end (-1 is the last argument). Otherwise, index must be the string "`#`", and select returns the total number of extra arguments it received.
+
+<hr/><br/>
+
+- `setmetatable(tbl, metatable)`<br/><br/>
+Sets the metatable for the given table. If metatable is nil, removes the metatable of the given table. If the original metatable has a `__metatable` field, raises an error.<br/>
+This function returns table.<br/>
+To change the metatable of other types from Lua code, you must use the debug library.
+
+<hr/><br/>
+
+- `tonumber(num [, base])`<br/><br/>
+When called with no base, `tonumber` tries to convert its argument to a number. If the argument is already a number or a string convertible to a number, then tonumber returns this number; otherwise, it returns fail.<br/><br/>
+The conversion of strings can result in integers or floats, according to the lexical conventions of Lua. The string may have leading and trailing spaces and a sign.<br/><br/>
+When called with base, then `num` must be a string to be interpreted as an integer numeral in that base.<br/>
+The base may be any integer between 2 and 36, inclusive. In bases above 10, the letter 'A' (in either upper or lower case) represents 10, 'B' represents 11, and so forth, with 'Z' representing 35.<br/>
+If the string `num` is not a valid numeral in the given base, the function returns fail.<br/><br/>
+Examples:
+```lua
+local numberAsString = '5.89'
+local number = tonumber(numberAsString)
+print(number, type(number)) -- output: 5.89 number
+```
+
+<hr/><br/>
+
+- `tostring(v)`<br/><br/>
+Receives a value of any type and converts it to a string in a human-readable format.<br/><br/>
+If the metatable of `v` has a `__tostring` field, then `tostring` calls the corresponding value with `v` as argument, and uses the result of the call as its result. Otherwise, if the metatable of `v` has a `__name` field with a string value, `tostring` may use that string in its final result.<br/><br/>
+For complete control of how numbers are converted, use `string.format.`<br/><br/>
+Examples:
+```lua
+local myNumber = 892
+local myString = tostring(myNumber)
+print(myString, type(myString)) -- output: 892 string
+```
+
+<hr/><br/>
+
+- `type(v)`<br/><br/>
+Returns the type of its only argument, coded as a string. The possible results of this function are "nil" (a string, not the value nil), "number", "string", "boolean", "table", "function", "thread", and "userdata".<br/><br/>
+Examples:
+```lua
+local myVar1 = 'this is a string'
+local myVar2 = 3
+local myVar3 = false
+local myVar4 = {3.14}
+local myVar5 = nil
+
+print(type(myVar1)) -- output: string
+print(type(myVar2)) -- output: number
+print(type(myVar3)) -- output: boolean
+print(type(myVar4)) -- output: table
+print(type(myVar5)) -- output: nil
+```
+
+<hr/><br/>
+
+- `_VERSION`<br/><br/>
+A global variable (not a function) that holds a string containing the running Lua version.
+
+<hr/><br/>
+
+- `warn (msg1, ...)`<br/><br/>
+Emits a warning with a message composed by the concatenation of all its arguments (which should be strings).<br/><br/>
+By convention, a one-piece message starting with '`@`' is intended to be a control message, which is a message to the warning system itself.
+In particular, the standard warning function in Lua recognizes the control messages "`@off`", to stop the emission of warnings, and "`@on`", to (re)start the emission; it ignores unknown control messages.
+
+<hr/><br/>
+
+- `xpcall (func, msgh [, arg1, ...])`<br/><br/>
+This function is similar to `pcall`, except that it sets a new message handler `msgh`.
 
 <br/><hr/><a name='garbage_collector'></a>
 

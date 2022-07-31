@@ -6,6 +6,7 @@
 - [Garbage Collector](#garbage_collector)
 - [Coroutines](#coroutines)
 - [Keywords](#keywords)
+- [Operators](#operators)
 
 <br/><hr/><a name='basic_functions'></a>
 
@@ -256,6 +257,47 @@ As a convention, programs should avoid creating names that start with an undersc
 (     )     {     }     [     ]     ::
 ;     :     ,     .     ..    ...
 ```
+
+
+<br/><hr/><a name='operators'></a>
+
+## Operators
+<br/>
+
+### <b>Arithmetic Operators:</b>
+- <b>+:</b> addition
+- <b>-:</b> subtraction
+- <b>*:</b> multiplication
+- <b>/:</b> float division
+- <b>//:</b> floor division
+- <b>%:</b> modulo
+- <b>^:</b> exponentiation
+- <b>-:</b> unary minus
+
+### <b>Bitwise Operators:</b>
+- <b>&:</b> bitwise AND
+- <b>|:</b> bitwise OR
+- <b>~:</b> bitwise exclusive OR
+- <b>>>:</b> right shift
+- <b><<:</b> left shift
+- <b>~:</b> unary bitwise NOT
+
+### <b>Relational Operators:</b>
+- <b>==:</b> equality
+- <b>~=:</b> inequality
+- <b><:</b> less than
+- <b>>:</b> greater than
+- <b><=:</b> less or equal
+- <b>>=:</b> greater or equal
+
+These operators <b>always</b> result in `false` or `true`.
+
+### <b>Logical Operators:</b>
+- <b>and</b>
+- <b>or</b>
+- <b>not</b>
+
+All logical operators consider both false and nil as false and anything else as true.
 
 <hr/>
 

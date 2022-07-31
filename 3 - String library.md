@@ -28,7 +28,7 @@ Returns the ASCII code of the characters.
 Default value for `index` is `1`; the default value for `endIndex` is `i`.
 These indices are corrected following the same rules of function `string.sub`.
 Numeric codes are not necessarily portable across platforms.<br/><br/>
-You can shorten it by using `:byte` instead.<br/>
+You can shorten it by using `:byte` instead.<br/><br/>
 Examples:
 ```lua
 local str = 'My string'
@@ -43,7 +43,7 @@ print(str:byte(4,6)) -- output: 115 116 114
 
 - `string.char(...)`<br/><br/>
 Receives zero or more integers. Returns a string with length equal to the number of arguments, in which each character has the internal numeric code equal to its corresponding argument.
-Numeric codes are not necessarily portable across platforms.
+Numeric codes are not necessarily portable across platforms.<br/><br/>
 Examples:
 ```lua
 local numA = 97
@@ -56,7 +56,7 @@ print(string.char(numA, numABigger)) -- output: aA
 
 - `string.dump(function [, strip])`<br/><br/>
 Returns a string containing a binary representation (a binary chunk) of the given function, so that a later load on this string returns a copy of the function (but with new upvalues). If strip is a true value, the binary representation may not include all debug information about the function, to save space.<br/>
-Functions with upvalues have only their number of upvalues saved. When (re)loaded, those upvalues receive fresh instances.
+Functions with upvalues have only their number of upvalues saved. When (re)loaded, those upvalues receive fresh instances.<br/><br/>
 Examples:
 ```lua
 local function foo()
@@ -76,7 +76,7 @@ load(dumped)() -- output: bar
 Looks for the first match of pattern in the string `text`. If it finds a match, then find returns the indices of `text` where this occurrence starts and ends; otherwise, it returns fail.<br/>
 A third, optional numeric argument `init` specifies where to start the search; its default value is `1` and <b>can</b> be negative. A true as a fourth, optional argument `plain` turns off the pattern matching facilities, so the function does a plain "find substring" operation, with no characters in pattern being considered magic.<br/>
 If the pattern has captures, then in a successful match the captured values are also returned, after the two indices.<br/>
-You can shorten it by using `:find` instead.<br/>
+You can shorten it by using `:find` instead.<br/><br/>
 Examples:
 ```lua
 local text = 'Hello, World!'
@@ -93,7 +93,7 @@ print(text:find('lll')) -- output: nil
 Returns a formatted version of its variable number of arguments following the description given in its first argument, which must be a string. The format string follows the same rules as the ISO C function sprintf. The only differences are that the conversion specifiers and modifiers F, n, *, h, L, and l are not supported and that there is an extra specifier, q. Both width and precision, when present, are limited to two digits.<br/>
 The conversion specifiers A, a, E, e, f, G, and g all expect a number as argument. The specifiers c, d, i, o, u, X, and x expect an integer.<br/>
 The specifier `s` expects a string<br/>
-You can shorten it by using `:format` instead.<br/>
+You can shorten it by using `:format` instead.<br/><br/>
 Examples:
 ```lua
 local formatString = 'Hello, %s!'
@@ -106,7 +106,7 @@ print(('I am %s. I am %d years old.'):format('Adam', 38)) -- output: I am Adam. 
 
 - `string.match(text, pattern [, init])`<br/><br/>
 Looks for the first match of the pattern in the string `text`. If it finds one, then match returns the captures from the pattern; otherwise it returns fail. If pattern specifies no captures, then the whole match is returned. A third, optional numeric argument init specifies where to start the search; its default value is 1 and can be negative.<br/>
-You can shorten it by using `:match` instead.<br/>
+You can shorten it by using `:match` instead.<br/><br/>
 Examples:
 ```lua
 local text = 'Where is my brother?'
@@ -119,7 +119,7 @@ print(text:match('WHERE')) -- output: nil
 
 - `string.gmatch(text, pattern [, init])`<br/><br/>
 Returns an iterator function that, each time it is called, returns the next captures from pattern over the string `text`. If `pattern` specifies no captures, then the whole match is produced in each call. A third, optional numeric argument `init` specifies where to start the search; its default value is `1` and <b>can</b> be negative.<br/>
-You can shorten it by using `:gmatch` instead.<br/>
+You can shorten it by using `:gmatch` instead.<br/><br/>
 Examples:
 ```lua
 local text = 'Hello world from Lua'
@@ -149,7 +149,7 @@ end
 - `string.sub(text [, index [, endIndex]])`<br/><br/>
 Returns the substring of `text` that starts at `index` and continues until `endIndex`; `index` and `endIndex` can be negative. If `endIndex` is absent, then it is assumed to be equal to `-1` (which is the same as the string length). In particular, the call `string.sub(text,1,endIndex)` returns a prefix of `text` with length `endIndex`, and `string.sub(text, -index)` (for a positive `index`) returns a suffix of `text` with length `index`.<br/><br/>
 If, after the translation of negative indices, `index` is less than 1, it is corrected to 1. If `endIndex` is greater than the string length, it is corrected to that length. If, after these corrections, `index` is greater than `endIndex`, the function returns the empty string.<br/>
-You can shorten it by using `:sub` instead.<br/>
+You can shorten it by using `:sub` instead.<br/><br/>
 Examples:
 ```lua
 local str = 'Hello Lua user'
@@ -168,7 +168,7 @@ If `repl` is a table, then the table is queried for every match, using the first
 If `repl` is a function, then this function is called every time a match occurs, with all captured substrings passed as arguments, in order.<br/>
 In any case, if the `pattern` specifies no captures, then it behaves as if the whole pattern was inside a capture.<br/>
 If the value returned by the table query or by the function call is a string or a number, then it is used as the replacement string; otherwise, if it is false or nil, then there is no replacement (that is, the original match is kept in the string).<br/>
-You can shorten it by using `:gsub` instead.<br/>
+You can shorten it by using `:gsub` instead.<br/><br/>
 Examples:
 ```lua
 local ex1 = 'hello world'
@@ -191,7 +191,7 @@ print(temp) -- output: lua-5.4.tar.gz
 
 - `string.len(text)`<br/><br/>
 Receives a string and returns its length. The empty string `""` has length 0. Embedded zeros are counted, so `"a\000bc\000"` has length 5.<br/>
-You can shorten it by using `:len` instead.<br/>
+You can shorten it by using `:len` instead.<br/><br/>
 Examples:
 ```lua
 local str = 'Count this!'
@@ -215,7 +215,7 @@ print('\n12\n34\n56\n78\n90')
 
 - `string.lower(text)`<br/><br/>
 Receives a string and returns a copy of this string with all uppercase letters changed to lowercase. All other characters are left unchanged. The definition of what an uppercase letter is depends on the current locale.<br/>
-You can shorten it by using `:lower` instead.<br/>
+You can shorten it by using `:lower` instead.<br/><br/>
 Examples:
 ```lua
 local str = 'ChAngE tHIS tO LOWERcaSE!'
@@ -225,7 +225,7 @@ print(str:lower()) -- output: change this to lowercase!
 
 - `string.upper(text)`<br/><br/>
 Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.<br/>
-You can shorten it by using `:upper` instead.<br/>
+You can shorten it by using `:upper` instead.<br/><br/>
 Examples:
 ```lua
 local str = 'chAnge tHIS tO upperCAse!'
@@ -235,7 +235,7 @@ print(str:upper()) -- output: CHANGE THIS TO UPPERCASE!
 
 - `string.reverse(text)`<br/><br/>
 Returns a string that is the string s reversed.<br/>
-You can shorten it by using `:reverse` instead.<br/>
+You can shorten it by using `:reverse` instead.<br/><br/>
 Examples:
 ```lua
 local str = 'Reverse this, please?'
@@ -246,7 +246,7 @@ print(str:reverse()) -- output: ?esaelp ,siht esreveR
 - `string.rep(text, num [, separator])`<br/><br/>
 Returns a string that is the concatenation of `num` copies of the string `text` separated by the string `separator`. The default value for `separator` is the empty string (that is, no separator). Returns the empty string if `num` is not positive.<br/>
 (Note that it is very easy to exhaust the memory of your machine with a single call to this function.)<br/>
-You can shorten it by using `:rep` instead.<br/>
+You can shorten it by using `:rep` instead.<br/><br/>
 Examples:
 ```lua
 print(('*'):rep(10)) -- output: **********
@@ -256,7 +256,7 @@ print(('-'):rep(5,'|')) -- output: -|-|-|-|-
 
 - `string.pack(fmt, v1, v2, ...)`<br/><br/>
 Returns a binary string containing the values `v1`, `v2`, etc. serialized in binary form (packed) according to the format string `fmt`<br/>
-You can shorten it by using `:pack` instead.<br/>
+You can shorten it by using `:pack` instead.<br/><br/>
 Examples:
 ```lua
 -- pack 4 ints to binary data
@@ -268,7 +268,7 @@ print(str:unpack(packed)) -- output: 21930 2 7 121 17
 
 - `string.unpack(fmt, str [, pos])`<br/><br/>
 Returns the values packed in string `fmt` according to the format string `fmt`. An optional `pos` marks where to start reading in `str` (default is 1). After the read values, this function also returns the index of the first unread byte in `str`.<br/>
-You can shorten it by using `:unpack` instead.<br/>
+You can shorten it by using `:unpack` instead.<br/><br/>
 Examples:
 ```lua
 -- pack 4 ints to binary data
@@ -309,4 +309,4 @@ For all classes represented by single letters (`%a`, `%c`, etc.), the correspond
 <hr/>
 
 - ## [Part 2](2%20-%20Basic%20concepts%202.md)
-- ## [Part 4]()
+- ## [Part 4](4%20-%20Table%20library.md)

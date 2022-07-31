@@ -5,6 +5,10 @@
 - [Data Types](#data_types)
 - [Comments](#comments)
 - [Scopes](#scopes)
+- [Concatenation](#concatenation)
+- [Length Operator](#length_operator)
+
+<br/><hr/><br/>
 
 <a name='declaring_variables'></a>
 
@@ -156,7 +160,73 @@ By default variables are global. To specify which scope should a variable use (g
 globalVariable = 'my global variable'
 local localVariable = 'my local variable'
 ```
-In this tutorials we will only use `local` variables. `global` variables are slooow.
+In this tutorials we will only use `local` variables. `global` variables are slooow. More on that later.
+
+<hr/><a name='concatenation'></a>
+
+## Concatenation
+
+The string concatenation operator in Lua is denoted by two dots ("`..`").
+If both operands are strings or numbers, then the numbers are converted to strings in a non-specified format.
+Otherwise, the `__concat` metamethod is called.
+
+<hr/><a name='length_operator'></a>
+
+## Length Operator
+
+The length operator is denoted by the unary prefix operator `#`.
+
+The length of a string is its number of bytes. (That is the usual meaning of string length when each character is one byte.)
+
+The length operator applied on a table returns a border in that table. A border in a table t is any non-negative integer that satisfies the following condition:
+```lua
+(border == 0 or t[border] ~= nil) and (t[border + 1] == nil or border == math.maxinteger)
+```
+In words, a border is any positive integer index present in the table that is followed by an absent index, plus two limit cases: zero, when index 1 is absent; and the maximum value for an integer, when that index is present. Note that keys that are not positive integers do not interfere with borders.
+
+A table with exactly one border is called a `sequence`.<br/>
+For instance, the table `{10, 20, 30, 40, 50}` is a sequence, as it has only one border (5).<br/>
+The table `{10, 20, 30, nil, 50}` has two borders (3 and 5), and therefore it is not a sequence. (The nil at index 4 is called a `hole`).<br/>
+The table `{nil, 20, 30, nil, nil, 60, nil}` has three borders (0, 3, and 6), so it is not a sequence, too. 
+
+The table `{}` is a sequence with border 0.
+
+<hr/><a name='visibility_rules'></a>
+
+## Visibility Rules
+
+Lua is a lexically scoped language. The scope of a local variable begins at the first statement after its declaration and lasts until the last non-void statement of the innermost block that includes the declaration. Consider the following example:
+```lua
+x = 10 -- global variable
+do -- new block
+    local x = x -- new 'x', with value 10
+    print(x) -- output: 10
+    x = x + 1
+    do -- another block
+        local x = x + 1 -- another 'x'
+        print(x) -- output: 12
+    end
+    print(x) -- output: 11
+end
+print(x) -- output: 10
+```
+Notice that, in a declaration like `local x = x`, the new `x` being declared is not in scope yet, and so the second `x` refers to the outside variable.
+
+Because of the lexical scoping rules, local variables can be freely accessed by functions defined inside their scope. A local variable used by an inner function is called an upvalue (or external local variable, or simply external variable) inside the inner function.
+
+Notice that each execution of a local statement defines new local variables. Consider the following example:
+```lua
+a = {}
+local x = 20
+for i = 1, 10 do
+    local y = 0
+    a[i] = function()
+        y = y + 1
+        return x + y
+    end
+end
+```
+The loop creates ten closures (that is, ten instances of the anonymous function). Each of these closures uses a different y variable, while all of them share the same x.
 
 <hr/>
 

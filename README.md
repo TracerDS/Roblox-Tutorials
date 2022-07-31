@@ -8,4 +8,5 @@ The most fundamental things you <b>need</b> to know are:
 
 ## Table of contents
 - [Basic concepts](1%20-%20Basic%20concepts.md)
-- [Basic concepts 2](1%20-%20Basic%20concepts%202.md)
+- [Basic concepts 2](2%20-%20Basic%20concepts%202.md)
+- [String library](3%20-%20String%20library.md)

@@ -253,4 +253,4 @@ print(myTbl['myKey'])
 <hr/>
 
 - ## [Part 3](3%20-%20String%20library.md)
-- ## [Part 5]()
+- ## [Part 5](5%20-%20Math%20library.md)

@@ -11,3 +11,5 @@ The most fundamental things you <b>need</b> to know are:
 - [Basic concepts 2](2%20-%20Basic%20concepts%202.md)
 - [String library](3%20-%20String%20library.md)
 - [Table library](4%20-%20Table%20library.md)
+- [Math library](5%20-%20Math%20library.md)
+- [OS library](6%20-%20OS%20library.md)

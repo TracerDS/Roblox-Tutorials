@@ -10,6 +10,8 @@
 
 ## Declaring a variable
 
+Variables are places that store values. There are three kinds of variables in Lua: global variables, local variables, and table fields.
+
 To declare a variable you need to provide name and its value in following format:
 ```lua
 name = value
@@ -27,8 +29,11 @@ bar = function()
     return 'bar'
 end
 ```
-<i>Don't worry if functions are confusing.
+Before the first assignment to a variable, its value is nil.
+
+<i>Don't worry if functions are confusing right now.
 We will get to them later</i>
+
 
 <hr/><a name='data_types'></a>
 
@@ -42,6 +47,7 @@ Lua has 7 simple data types:
 - table
 - function
 - userdata
+- thread
 
 <br/>
 
@@ -51,6 +57,9 @@ myVariable = nil
 local myOtherVariable
 ```
 Both variables return nil, but the first one is global while the second one is local. More on that later.
+<br/>
+<b>Q:</b> What does `nil` mean?<br/>
+<b>A:</b> It represents the absence of a useful value. In short terms: `nil` = no value
 
 <br/>
 
@@ -107,9 +116,24 @@ end
 ```
 As you can see `function <functionName>` is also a syntatic sugar. `foo` and `fooBar` are the same functions as well as `bar` and `barFoo`.
 
+<br/>
+
+<b>Q:</b> What are `userdata`s?
+<br/>
+<b>A:</b> Quote:<br/>
+"The type userdata is provided to allow arbitrary C data to be stored in Lua variables.<br/>
+A userdata value represents a block of raw memory. There are two kinds of userdata:
+- <b>full userdata</b>, which is an object with a block of memory managed by Lua
+- <b>light userdata</b>, which is simply a C pointer value"
+
+<b>Q:</b> What are `thread`s?
+<br/>
+<b>A:</b> Quote:<br/> "The type thread represents independent threads of execution and it is used to implement coroutines. Lua threads are not related to operating-system threads. Lua supports coroutines on all systems, even those that do not support threads natively."
+
 <hr/><a name='comments'></a>
 
 ## Comments
+
 In order to "disable" certain lines from executing you can use comments. Lua ignores both comments and whitelines:
 ```lua
 -- this prints test

@@ -203,7 +203,8 @@ setmetatable(myTable, {
     end
 })
 myTable(56,'hello', 'world') -- output: Arguments: 56 hello world
-
+```
+```lua
 local otherTable = setmetatable({},{
     __newindex = function(tbl, index, value)
         print('Trying to set new index: ',index, value)
@@ -227,7 +228,28 @@ otherTable['someKey'] = 'someValue'
     Table is read only!
 ]]
 ```
+```lua
+local myTbl = setmetatable({}, {
+    __index = function(tbl, index)
+        print(('Returning value %s at index %s...'):format(rawget(tbl, index),index))
+        return rawget(tbl, index)
+    end,
+    __newindex = function(tbl, index, value)
+        print(('Creating value %s at index %s...'):format(value,index))
+        return rawset(tbl, index, value)
+    end
+})
+myTbl['myKey'] = 'test'
+myTbl['someOtherKey'] = nil
+print(myTbl['myKey'])
 
+--[[
+    output:
+    Creating value test at index myKey...
+    Creating value nil at index someOtherKey...
+    test
+]]
+```
 <hr/>
 
 - ## [Part 3](3%20-%20String%20library.md)

@@ -158,5 +158,7 @@ local localVariable = 'my local variable'
 ```
 In this tutorials we will only use `local` variables. `global` variables are slooow.
 
+<hr/>
 
-## [Part 2](2%20-%20Basic%20concepts%202.md)
+- ## [Index](README.md)
+- ## [Part 2](2%20-%20Basic%20concepts%202.md)

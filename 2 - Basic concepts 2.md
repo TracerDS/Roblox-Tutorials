@@ -257,4 +257,7 @@ As a convention, programs should avoid creating names that start with an undersc
 ;     :     ,     .     ..    ...
 ```
 
-## [Part 3](3%20-%20String%20library.md)
+<hr/>
+
+- ## [Part 1](1%20-%20Basic%20concepts.md)
+- ## [Part 3](3%20-%20String%20library.md)

@@ -151,5 +151,84 @@ end
 ]]
 ```
 
+<br/><hr/><a name='metatables'></a>
+
+## Metatables
+
+Every value in Lua can have a metatable. This metatable is an ordinary Lua table that defines the behavior of the original value under certain events. You can change several aspects of the behavior of a value by setting specific fields in its metatable. For instance, when a non-numeric value is the operand of an addition, Lua checks for a function in the field `__add` of the value's metatable. If it finds one, Lua calls this function to perform the addition.
+
+You can query the metatable of any value using the `getmetatable` function. Lua queries metamethods in metatables using a raw access (`rawget`).
+
+You can replace the metatable of tables using the `setmetatable` function. You cannot change the metatable of other types from Lua code, except by using the debug library.
+
+
+### <b>Metamethods list:</b>
+
+- <b>__add:</b> the addition (`+`) operation. If any operand for an addition is not a number, Lua will try to call a metamethod. It starts by checking the first operand (even if it is a number); if that operand does not define a metamethod for `__add`, then Lua will check the second operand. If Lua can find a metamethod, it calls the metamethod with the two operands as arguments, and the result of the call (adjusted to one value) is the result of the operation. Otherwise, if no metamethod is found, Lua raises an error.
+- <b>__sub:</b> the subtraction (`-`) operation. Behavior similar to the addition operation.
+- <b>__mul:</b> the multiplication (`*`) operation. Behavior similar to the addition operation.
+- <b>__div:</b> the division (`/`) operation. Behavior similar to the addition operation.
+- <b>__mod:</b> the modulo (`%`) operation. Behavior similar to the addition operation.
+- <b>__pow:</b> the exponentiation (`^`) operation. Behavior similar to the addition operation.
+- <b>__unm:</b> the negation (unary `-`) operation. Behavior similar to the addition operation.
+- <b>__idiv:</b> the floor division (`//`) operation. Behavior similar to the addition operation.
+- <b>__band:</b> the bitwise AND (`&`) operation. Behavior similar to the addition operation, except that Lua will try a metamethod if any operand is neither an integer nor a float coercible to an integer.
+- <b>__bor:</b> the bitwise OR (`|`) operation. Behavior similar to the bitwise AND operation.
+- <b>__bxor:</b> the bitwise exclusive OR (binary `~`) operation. Behavior similar to the bitwise AND operation.
+- <b>__bnot:</b> the bitwise NOT (unary `~`) operation. Behavior similar to the bitwise AND operation.
+- <b>__shl:</b> the bitwise left shift (`<<`) operation. Behavior similar to the bitwise AND operation.
+- <b>__shr:</b> the bitwise right shift (`>>`) operation. Behavior similar to the bitwise AND operation.
+- <b>__concat:</b> the concatenation (`..`) operation. Behavior similar to the addition operation, except that Lua will try a metamethod if any operand is neither a string nor a number (which is always coercible to a string).
+- <b>__len:</b> the length (`#`) operation. If the object is not a string, Lua will try its metamethod. If there is a metamethod, Lua calls it with the object as argument, and the result of the call (always adjusted to one value) is the result of the operation. If there is no metamethod but the object is a table, then Lua uses the table length operation. Otherwise, Lua raises an error.
+- <b>__eq:</b> the equal (`==`) operation. Behavior similar to the addition operation, except that Lua will try a metamethod only when the values being compared are either both tables or both full userdata and they are not primitively equal. The result of the call is always converted to a boolean.
+- <b>__lt:</b> the less than (`<`) operation. Behavior similar to the addition operation, except that Lua will try a metamethod only when the values being compared are neither both numbers nor both strings. Moreover, the result of the call is always converted to a boolean.
+- <b>__le:</b> the less equal (`<=`) operation. Behavior similar to the less than operation.
+- <b>__index:</b> The indexing access operation `table[key]`. This event happens when table is not a table or when key is not present in table. The metavalue is looked up in the metatable of table.<br/>
+The metavalue for this event can be either a function, a table, or any value with an `__index` metavalue. If it is a function, it is called with table and key as arguments, and the result of the call (adjusted to one value) is the result of the operation. Otherwise, the final result is the result of indexing this metavalue with key. This indexing is regular, not raw, and therefore can trigger another `__index` metavalue.
+- <b>__newindex:</b> The indexing assignment `table[key] = value`. Like the `__index` event, this event happens when table is not a table or when key is not present in table. The metavalue is looked up in the metatable of table.<br/>
+Like with indexing, the metavalue for this event can be either a function, a table, or any value with an `__newindex` metavalue. If it is a function, it is called with table, key, and value as arguments. Otherwise, Lua repeats the indexing assignment over this metavalue with the same key and value. This assignment is regular, not raw, and therefore can trigger another `__newindex` metavalue.<br/><br/>
+Whenever a `__newindex` metavalue is invoked, Lua does not perform the primitive assignment. If needed, the metamethod itself can call `rawset` to do the assignment.
+- <b>__call:</b> The call operation `func(args)`. This event happens when Lua tries to call a non-function value (that is, func is not a function). The metamethod is looked up in func. If present, the metamethod is called with func as its first argument, followed by the arguments of the original call (args). All results of the call are the results of the operation. This is the only metamethod that allows multiple results.
+
+In addition to the previous list, the interpreter also respects the following keys in metatables: `__gc`, `__close`, `__mode` and `__name`. (The entry `__name`, when it contains a string, may be used by `tostring` and in error messages.)
+
+### <b>Examples:</b>
+
+```lua
+local myTable = { someField = 'someValue' }
+setmetatable(myTable, {
+    __call = function(tbl, ...)
+        local args = table.concat({...}, ' ')
+        print('Arguments: ',args)
+    end
+})
+myTable(56,'hello', 'world') -- output: Arguments: 56 hello world
+
+local otherTable = setmetatable({},{
+    __newindex = function(tbl, index, value)
+        print('Trying to set new index: ',index, value)
+        error('Table is read only!')
+        return nil
+    end
+})
+
+for k,v in pairs(getmetatable(otherTable)) do
+    print(k,v)
+end
+
+for k,v in pairs(otherTable) do print(k,v) end -- Doesn't print anything
+
+otherTable['someKey'] = 'someValue'
+
+--[[
+    output:
+    __newindex function
+    Trying to set new index: someKey someValue
+    Table is read only!
+]]
+```
+
+<hr/>
+
 - ## [Part 3](3%20-%20String%20library.md)
 - ## [Part 5]()

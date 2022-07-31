@@ -130,6 +130,35 @@ end
 <br/>
 <b>A:</b> `ipairs` doesn't loop through dictionaries while `pairs` loops through everything (both arrays and dictionaries). But it comes at a cost. `ipairs` is faster than `pairs` in looping through arrays.
 
+To get variable's type use `type` function:
+```lua
+local myVar1 = 'this is a string'
+local myVar2 = 3
+local myVar3 = false
+local myVar4 = {3.14}
+local myVar5 = nil
+
+print(type(myVar1)) -- output: string
+print(type(myVar2)) -- output: number
+print(type(myVar3)) -- output: boolean
+print(type(myVar4)) -- output: table
+print(type(myVar5)) -- output: nil
+```
+
+To convert string to an integer use `tonumber` function:
+```lua
+local numberAsString = '5.89'
+local number = tonumber(numberAsString)
+print(number, type(number)) -- output: 5.89 number
+```
+
+To convert number to string use `tostring` function:
+```lua
+local myNumber = 892
+local myString = tostring(myNumber)
+print(myString, type(myString)) -- output: 892 string
+```
+
 <br/><hr/><a name='error_handling'></a>
 
 ## Error Handling

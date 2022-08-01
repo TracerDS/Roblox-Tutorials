@@ -73,7 +73,22 @@ local myName = 'Tommy'
 local friend = "Steve"
 myMom = "Karen"
 ```
-As you can see you can use both `""` and `''` to create a string variable. Lua doesn't care which one you choose. It's entirely up to you.
+As you can see you can use both `""` and `''` to create a string variable. Lua doesn't care which one you choose. It's entirely up to you.<br/>
+You can also use `[[]]` to create multi-line string:
+```lua
+local myString = [[this is
+a multiline
+    string
+]]
+print(myString)
+
+--[[
+    output:
+    this is
+    a multiline
+        string
+]]
+```
 
 <br/>
 
@@ -101,6 +116,20 @@ arrayAsDictionary = {
 `arrayAsDictionary` is <b>the same</b> as `myAmazingTable`. The possibility to not write indexes is just a "syntatic sugar".<br/>
 <b>IMPORTANT: </b> Lua starts index at `1` instead of `0`
 
+To access and change Lua table use this format:
+```lua
+local tbl = {'someKey', 'someValue', 3.14}
+
+print(tbl[1], tbl[2], tbl[3]) -- output: someKey someValue 3.14
+
+tbl[4] = 'AnotherKey'
+print(tbl[4]) -- output: AnotherKey
+
+tbl['StringIndex'] = 'stringValue'
+
+print(tbl.StringIndex) -- output: stringValue
+```
+
 <br/>
 
 To create a function, use `function` and `end` keywords:
@@ -122,6 +151,70 @@ As you can see `function <functionName>` is also a syntatic sugar. `foo` and `fo
 
 <br/>
 
+You can pass data to functions as <b>arguments</b>.<br/>
+First, you need to "enable a possibility for a function to accept parameters".
+I know it sounds complicated but it's actually very simple.
+```lua
+function myFunction(argument1)
+    print(argument1)
+end
+
+myFunction(6) -- output: 6
+myFunction('Test') -- output: Test
+myFunction(myFunction) -- output: function
+```
+You can also pass multiple variables to a function:
+```lua
+function customFunc(arg1, arg2, arg3, arg4)
+    print(arg1, arg2, arg3, arg4)
+end
+customFunc(1, 2, 3, 4) -- output: 1 2 3 4
+customFunc('test',true,'key',3.14) -- output: test true key 3.14
+customFunc('this', 'would be', 'null') -- output: this  would be  null  nil
+
+function myFunc(...)
+    local args = {...} -- pack parameters to a table
+    for k,v in pairs(args) do -- print them
+        print(k,v)
+    end
+end
+
+myFunc(3.14, 'test')
+--[[
+    output:
+    1 3.14
+    2 test
+]]
+```
+You can pass <b>every</b> kind of Lua data to functions.
+Including functions itself. Yes, you can pass certain function as the parameter to <b>that</b> function:
+```lua
+function doSomething(func, ...)
+    func(...)
+end
+
+doSomething(print, 3.14) -- output: 3.14
+doSomething(doSomething) -- ERROR: Stack Overflow
+```
+As you can see an error would pop up if you'd pass `doSomething` function to itself. Why? Because of <b>recursion</b>. By using recursion you can for instance calculate the fibonacci sequence:
+```lua
+function fibonacci(num)
+    if num == 0 then return 0
+    elseif num == 1 then return 1
+    else
+        return fibonacci(num - 1) + fibonacci(num - 2)
+    end
+end
+
+print(fibonacci(3)) -- output: 2
+print(fibonacci(6)) -- output: 8
+print(fibonacci(12)) -- output: 144
+```
+However you cannot use `recursion` indefinitely.<br/>
+At some point it <b>will</b> crash and return an error.
+
+<br/>
+
 <b>Q:</b> What are `userdata`s?
 <br/>
 <b>A:</b> Quote:<br/>
@@ -129,6 +222,8 @@ As you can see `function <functionName>` is also a syntatic sugar. `foo` and `fo
 A userdata value represents a block of raw memory. There are two kinds of userdata:
 - <b>full userdata</b>, which is an object with a block of memory managed by Lua
 - <b>light userdata</b>, which is simply a C pointer value"
+
+We will ignore `userdata`s for the rest of these tutorials.
 
 <b>Q:</b> What are `thread`s?
 <br/>

@@ -13,3 +13,4 @@ The most fundamental things you <b>need</b> to know are:
 - [Table library](4%20-%20Table%20library.md)
 - [Math library](5%20-%20Math%20library.md)
 - [OS library](6%20-%20OS%20library.md)
+- [Roblox basics](7%20-%20Roblox%20basics.md)

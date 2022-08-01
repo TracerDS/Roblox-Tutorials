@@ -30,46 +30,46 @@ These indices are corrected following the same rules of function `string.sub`.
 Numeric codes are not necessarily portable across platforms.<br/><br/>
 You can shorten it by using `:byte` instead.<br/><br/>
 Examples:
-```lua
-local str = 'My string'
-print(string.byte(str)) -- output: 77
-print(string.byte(str,1)) -- output: 77
-print(string.byte(str,3)) -- output: 32
-print(string.byte(str,3,6)) -- output: 32 115	116	114
+    ```lua
+    local str = 'My string'
+    print(string.byte(str)) -- output: 77
+    print(string.byte(str,1)) -- output: 77
+    print(string.byte(str,3)) -- output: 32
+    print(string.byte(str,3,6)) -- output: 32 115	116	114
 
-print(str:byte(4,6)) -- output: 115 116 114
-```
+    print(str:byte(4,6)) -- output: 115 116 114
+    ```
 <hr/><br/>
 
 - `string.char(...)`<br/><br/>
 Receives zero or more integers. Returns a string with length equal to the number of arguments, in which each character has the internal numeric code equal to its corresponding argument.
 Numeric codes are not necessarily portable across platforms.<br/><br/>
 Examples:
-```lua
-local numA = 97
-local numABigger = 65
-print(string.char(numA)) -- output: a
-print(string.char(numABigger)) -- output: A
-print(string.char(numA, numABigger)) -- output: aA
-```
+    ```lua
+    local numA = 97
+    local numABigger = 65
+    print(string.char(numA)) -- output: a
+    print(string.char(numABigger)) -- output: A
+    print(string.char(numA, numABigger)) -- output: aA
+    ```
 <hr/><br/>
 
 - `string.dump(function [, strip])`<br/><br/>
 Returns a string containing a binary representation (a binary chunk) of the given function, so that a later load on this string returns a copy of the function (but with new upvalues). If strip is a true value, the binary representation may not include all debug information about the function, to save space.<br/>
 Functions with upvalues have only their number of upvalues saved. When (re)loaded, those upvalues receive fresh instances.<br/><br/>
 Examples:
-```lua
-local function foo()
-    print('bar')
-end
-local dumped = string.dump(foo)
-print(dumped) -- this will print binary data. Unreadable by human user
+    ```lua
+    local function foo()
+        print('bar')
+    end
+    local dumped = string.dump(foo)
+    print(dumped) -- this will print binary data. Unreadable by human user
 
-local f = load(dumped)
-f() -- output: bar
+    local f = load(dumped)
+    f() -- output: bar
 
-load(dumped)() -- output: bar
-```
+    load(dumped)() -- output: bar
+    ```
 <hr/><br/>
 
 - `string.find(text, pattern [, init [, plain]])`<br/><br/>
@@ -78,15 +78,15 @@ A third, optional numeric argument `init` specifies where to start the search; i
 If the pattern has captures, then in a successful match the captured values are also returned, after the two indices.<br/>
 You can shorten it by using `:find` instead.<br/><br/>
 Examples:
-```lua
-local text = 'Hello, World!'
-print(string.find(text, 'hello')) -- output: nil
-print(string.find(text, 'Hello')) -- output: 1 5
-print(string.find(text, 'world')) -- output: nil
-print(string.find(text, 'World')) -- output: 7 11
-print(text:find('l')) -- output: 3 3
-print(text:find('lll')) -- output: nil
-```
+    ```lua
+    local text = 'Hello, World!'
+    print(string.find(text, 'hello')) -- output: nil
+    print(string.find(text, 'Hello')) -- output: 1 5
+    print(string.find(text, 'world')) -- output: nil
+    print(string.find(text, 'World')) -- output: 7 11
+    print(text:find('l')) -- output: 3 3
+    print(text:find('lll')) -- output: nil
+    ```
 <hr/><br/>
 
 - `string.format(text, ...)`<br/><br/>
@@ -95,55 +95,55 @@ The conversion specifiers A, a, E, e, f, G, and g all expect a number as argumen
 The specifier `s` expects a string<br/>
 You can shorten it by using `:format` instead.<br/><br/>
 Examples:
-```lua
-local formatString = 'Hello, %s!'
+    ```lua
+    local formatString = 'Hello, %s!'
 
-print(string.format(formatString, 'World')) -- output: Hello, World!
-print(formatString:format('Steve')) -- output: Hello, Steve!
-print(('I am %s. I am %d years old.'):format('Adam', 38)) -- output: I am Adam. I am 38 years old
-```
+    print(string.format(formatString, 'World')) -- output: Hello, World!
+    print(formatString:format('Steve')) -- output: Hello, Steve!
+    print(('I am %s. I am %d years old.'):format('Adam', 38)) -- output: I am Adam. I am 38 years old
+    ```
 <hr/><br/>
 
 - `string.match(text, pattern [, init])`<br/><br/>
 Looks for the first match of the pattern in the string `text`. If it finds one, then match returns the captures from the pattern; otherwise it returns fail. If pattern specifies no captures, then the whole match is returned. A third, optional numeric argument init specifies where to start the search; its default value is 1 and can be negative.<br/>
 You can shorten it by using `:match` instead.<br/><br/>
 Examples:
-```lua
-local text = 'Where is my brother?'
+    ```lua
+    local text = 'Where is my brother?'
 
-print(string.match(text,'brother')) -- output: brother
-print(text:match('my')) -- output: my
-print(text:match('WHERE')) -- output: nil
-```
+    print(string.match(text,'brother')) -- output: brother
+    print(text:match('my')) -- output: my
+    print(text:match('WHERE')) -- output: nil
+    ```
 <hr/><br/>
 
 - `string.gmatch(text, pattern [, init])`<br/><br/>
 Returns an iterator function that, each time it is called, returns the next captures from pattern over the string `text`. If `pattern` specifies no captures, then the whole match is produced in each call. A third, optional numeric argument `init` specifies where to start the search; its default value is `1` and <b>can</b> be negative.<br/>
 You can shorten it by using `:gmatch` instead.<br/><br/>
 Examples:
-```lua
-local text = 'Hello world from Lua'
-for word in string.gmatch(text, '%a+') do
-    print(word)
-end
---[[
-    output:
-    Hello
-    world
-    from
-    Lua
-]]
+    ```lua
+    local text = 'Hello world from Lua'
+    for word in string.gmatch(text, '%a+') do
+        print(word)
+    end
+    --[[
+        output:
+        Hello
+        world
+        from
+        Lua
+    ]]
 
-local myString = 'This is my string'
-for str in myString:gmatch('(%a*is)') do
-    print(str)
-end
---[[
-    output:
-    This
-    is
-]]
-```
+    local myString = 'This is my string'
+    for str in myString:gmatch('(%a*is)') do
+        print(str)
+    end
+    --[[
+        output:
+        This
+        is
+    ]]
+    ```
 <hr/><br/>
 
 - `string.sub(text [, index [, endIndex]])`<br/><br/>
@@ -151,14 +151,14 @@ Returns the substring of `text` that starts at `index` and continues until `endI
 If, after the translation of negative indices, `index` is less than 1, it is corrected to 1. If `endIndex` is greater than the string length, it is corrected to that length. If, after these corrections, `index` is greater than `endIndex`, the function returns the empty string.<br/>
 You can shorten it by using `:sub` instead.<br/><br/>
 Examples:
-```lua
-local str = 'Hello Lua user'
-print(string.sub(str, 7)) -- output: Lua user
-print(str:sub(7, 9)) -- output: Lua
-print(str:sub(-8)) -- output: Lua user
-print(str:sub(-8, 9)) -- output: Lua
-print(str:sub(-8, -6)) -- output: Lua
-```
+    ```lua
+    local str = 'Hello Lua user'
+    print(string.sub(str, 7)) -- output: Lua user
+    print(str:sub(7, 9)) -- output: Lua
+    print(str:sub(-8)) -- output: Lua user
+    print(str:sub(-8, 9)) -- output: Lua
+    print(str:sub(-8, -6)) -- output: Lua
+    ```
 <hr/><br/>
 
 - `string.gsub(text, pattern, repl [, num])`<br/><br/>
@@ -170,47 +170,47 @@ In any case, if the `pattern` specifies no captures, then it behaves as if the w
 If the value returned by the table query or by the function call is a string or a number, then it is used as the replacement string; otherwise, if it is false or nil, then there is no replacement (that is, the original match is kept in the string).<br/>
 You can shorten it by using `:gsub` instead.<br/><br/>
 Examples:
-```lua
-local ex1 = 'hello world'
-print(string.gsub(ex1, '(%w+)', '%1 %1')) -- output: hello hello world world
-print(string.gsub(ex1, '%w+', '%0 %0', 1)) -- output: hello hello world
+    ```lua
+    local ex1 = 'hello world'
+    print(string.gsub(ex1, '(%w+)', '%1 %1')) -- output: hello hello world world
+    print(string.gsub(ex1, '%w+', '%0 %0', 1)) -- output: hello hello world
 
-print(string.gsub(ex1..' from Lua', '(%w+)%s*(%w+)', '%2 %1') )-- output: world hello Lua from
+    print(string.gsub(ex1..' from Lua', '(%w+)%s*(%w+)', '%2 %1') )-- output: world hello Lua from
 
-local ex2 = ('home = $HOME, user = $USER', '%$(%w+)'):gsub('roberto')
-print(ex2) -- output: home = roberto, user = roberto
+    local ex2 = ('home = $HOME, user = $USER', '%$(%w+)'):gsub('roberto')
+    print(ex2) -- output: home = roberto, user = roberto
 
-local ex3 = string.gsub('4+5 = $return 4+5$', '%$(.-)%$', function(str) return load(str)() end)
-print(ex3) -- output: 4+5 = 9
+    local ex3 = string.gsub('4+5 = $return 4+5$', '%$(.-)%$', function(str) return load(str)() end)
+    print(ex3) -- output: 4+5 = 9
 
-local ex4 = { name = 'lua', version = '5.4' }
-local temp = ('$name-$version.tar.gz'):gsub('%$(%w+)', ex4)
-print(temp) -- output: lua-5.4.tar.gz
-```
+    local ex4 = { name = 'lua', version = '5.4' }
+    local temp = ('$name-$version.tar.gz'):gsub('%$(%w+)', ex4)
+    print(temp) -- output: lua-5.4.tar.gz
+    ```
 <hr/><br/>
 
 - `string.len(text)`<br/><br/>
 Receives a string and returns its length. The empty string `""` has length 0. Embedded zeros are counted, so `"a\000bc\000"` has length 5.<br/>
 You can shorten it by using `:len` instead.<br/><br/>
 Examples:
-```lua
-local str = 'Count this!'
-print(string.len(str)) -- output: 11
-print(str:len()) -- output: 11
-print(#str) -- output: 11
+    ```lua
+    local str = 'Count this!'
+    print(string.len(str)) -- output: 11
+    print(str:len()) -- output: 11
+    print(#str) -- output: 11
 
-print(('\n12\n34\n56\n78\n90'):len()) -- output: 15
-print('\n12\n34\n56\n78\n90')
---[[
-    output:
+    print(('\n12\n34\n56\n78\n90'):len()) -- output: 15
+    print('\n12\n34\n56\n78\n90')
+    --[[
+        output:
 
-    12
-    34
-    56
-    78
-    90
-]]
-```
+        12
+        34
+        56
+        78
+        90
+    ]]
+    ```
 <hr/><br/>
 
 - `string.lower(text)`<br/><br/>
@@ -227,20 +227,20 @@ print(str:lower()) -- output: change this to lowercase!
 Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.<br/>
 You can shorten it by using `:upper` instead.<br/><br/>
 Examples:
-```lua
-local str = 'chAnge tHIS tO upperCAse!'
-print(str:upper()) -- output: CHANGE THIS TO UPPERCASE!
-```
+    ```lua
+    local str = 'chAnge tHIS tO upperCAse!'
+    print(str:upper()) -- output: CHANGE THIS TO UPPERCASE!
+    ```
 <hr/><br/>
 
 - `string.reverse(text)`<br/><br/>
 Returns a string that is the string s reversed.<br/>
 You can shorten it by using `:reverse` instead.<br/><br/>
 Examples:
-```lua
-local str = 'Reverse this, please?'
-print(str:reverse()) -- output: ?esaelp ,siht esreveR
-```
+    ```lua
+    local str = 'Reverse this, please?'
+    print(str:reverse()) -- output: ?esaelp ,siht esreveR
+    ```
 <hr/><br/>
 
 - `string.rep(text, num [, separator])`<br/><br/>
@@ -248,34 +248,34 @@ Returns a string that is the concatenation of `num` copies of the string `text` 
 (Note that it is very easy to exhaust the memory of your machine with a single call to this function.)<br/>
 You can shorten it by using `:rep` instead.<br/><br/>
 Examples:
-```lua
-print(('*'):rep(10)) -- output: **********
-print(('-'):rep(5,'|')) -- output: -|-|-|-|-
-```
+    ```lua
+    print(('*'):rep(10)) -- output: **********
+    print(('-'):rep(5,'|')) -- output: -|-|-|-|-
+    ```
 <hr/><br/>
 
 - `string.pack(fmt, v1, v2, ...)`<br/><br/>
 Returns a binary string containing the values `v1`, `v2`, etc. serialized in binary form (packed) according to the format string `fmt`<br/>
 You can shorten it by using `:pack` instead.<br/><br/>
 Examples:
-```lua
--- pack 4 ints to binary data
-local str = '>I4I4I4I4'
-local packed = str:pack(0x000055AA, 2, 7, 121)
-print(str:unpack(packed)) -- output: 21930 2 7 121 17
-```
+    ```lua
+    -- pack 4 ints to binary data
+    local str = '>I4I4I4I4'
+    local packed = str:pack(0x000055AA, 2, 7, 121)
+    print(str:unpack(packed)) -- output: 21930 2 7 121 17
+    ```
 <hr/><br/>
 
 - `string.unpack(fmt, str [, pos])`<br/><br/>
 Returns the values packed in string `fmt` according to the format string `fmt`. An optional `pos` marks where to start reading in `str` (default is 1). After the read values, this function also returns the index of the first unread byte in `str`.<br/>
 You can shorten it by using `:unpack` instead.<br/><br/>
 Examples:
-```lua
--- pack 4 ints to binary data
-local str = '>I4I4I4I4'
-local packed = str:pack(0x000055AA, 2, 7, 121)
-print(str:unpack(packed)) -- output: 21930 2 7 121 17
-```
+    ```lua
+    -- pack 4 ints to binary data
+    local str = '>I4I4I4I4'
+    local packed = str:pack(0x000055AA, 2, 7, 121)
+    print(str:unpack(packed)) -- output: 21930 2 7 121 17
+    ```
 
 <br/><hr/><a name='patterns'></a>
 

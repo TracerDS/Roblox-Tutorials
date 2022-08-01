@@ -104,6 +104,7 @@ The callback function is invoked with two arguments:
     ```lua
     spawn(print) -- 0.0079617658390703 451.55683163643
     ```
+    <b>USE [`task.spawn()`](#task_library-spawn) INSTEAD!!!!!</b>
 
 <hr/><br/>
 
@@ -153,7 +154,7 @@ This function returns:
     - Actual time yielded (in seconds)
     - Total time since the software was initialized (in seconds)
     
-    <b>USE [`task.wait()`](#task_library-spawn) INSTEAD!!!!!</b>
+    <b>USE [`task.wait()`](#task_library-wait) INSTEAD!!!!!</b>
 
 <hr/><br/>
 
@@ -221,6 +222,8 @@ This function differs from the global delay function in that no throttling occur
 You can calculate the actual time passed by calling os.clock upon scheduling and in the scheduled function.
 
 <hr/><br/>
+
+<a name='task_library-wait'></a>
 
 - `number task.wait(number duration=0)`<br/><br/>
 Yields the current thread until the given duration (in seconds) has elapsed, then resumes the thread on the next Heartbeat step. The actual amount of time elapsed is returned.<br/><br/>

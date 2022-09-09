@@ -231,3 +231,6 @@ If no duration is given, it will default to 0. This means the thread resumes on 
 Unlike the global wait, this function does not throttle and guarantees the resumption of the thread on the first Heartbeat that occurs when it is due. This function also only returns the elapsed time and nothing else.
 
 <hr/><br/>
+
+- ## [Part 6](6%20-%20OS%20library.md)
+- ## [Part 8](8%20-%20Roblox%20Tutorial%20-%20pt.1.md)

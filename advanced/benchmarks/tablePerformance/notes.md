@@ -18,5 +18,5 @@ Next: 0% slower
 #tbl: 23.3405% slower
 {}: 0.0775% slower
 ```
-As you can see the slowest one is `{}`, but it doesn't matter.<br/>
+As you can see the slowest one is `#tbl`, but it doesn't matter.<br/>
 Its about milliseconds even on the most iterations possible.

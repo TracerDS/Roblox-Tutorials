@@ -9,16 +9,16 @@ function addQuery(str, str2) {
     return `<a href='/Roblox-Tutorials/?q=${str}'>${str2}</a>`
 }
 
-function loadService(db, data){
-    data.__customData.classType += ' Service'
+function loadService(db, data, type){
+    data.__customData.classType = `${type} Service`
 
     $(`<style>${JSONtoCSS(data.__customData.css)}</style>`).appendTo($('head'))
     $('main').html(getTemplate(data.nameDisplay, data.__customData.classType, data.content))
     $('.main-classtype > h2').html(data.__customData.classType)
 }
 
-function loadClass(db, data){
-    data.__customData.classType += ' Class'
+function loadClass(db, data, type){
+    data.__customData.classType = `${type} Class`
 
     $(`<style>${JSONtoCSS(data.__customData.css)}</style>`).appendTo($('head'))
     $('main').html(getTemplate(data.nameDisplay, data.__customData.classType, data.content))
@@ -122,7 +122,7 @@ function loadWebsite(db, queryParams, filterParams, limitParams){
         type: classType
     }
 
-    if(obj.pageType === 'CLASS') return loadClass(db, obj)
-    else if(obj.pageType == 'SERVICE') return loadService(db, obj)
+    if(obj.pageType === 'CLASS') return loadClass(db, obj, classType)
+    else if(obj.pageType == 'SERVICE') return loadService(db, obj, classType)
     else throw Error('Unknown page type!')
 }

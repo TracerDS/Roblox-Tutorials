@@ -4,11 +4,12 @@ body {
     font-family: 'Inter', sans-serif;
     color: #bbb;
 }
-a:visited, a:link {
+a, a:visited, a:link, .std-a, .std-a:visited, .std-a:link {
     color: #70a9e4;
     text-decoration: none;
+    cursor: pointer;
 }
-a:hover {
+a:hover, .std-a:hover {
     color: white;
     text-decoration: underline;
 }

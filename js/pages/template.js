@@ -9,5 +9,13 @@ function getTemplate(className, classType, description){
     </div>
     <div style='clear: both'></div>
 </div>
-<p>${description}</p>`
+<div>
+    <p class='main-description'>${description}</p><br/>
+    <h2>Properties</h2>
+    <div class='main-properties'></div>
+    <h2>Methods</h2>
+    <div class='main-methods'></div>
+    <h2>Events</h2>
+    <div class='main-events'></div>
+</div>`
 }

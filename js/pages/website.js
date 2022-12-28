@@ -1,20 +1,76 @@
 function get404(){
     return `<h1>
 That page doesn't exist :c<br/>
-<a href='/Roblox-Tutorials'>Go back</a>
+<span class='std-a' onclick='history.back()'>Go back</span>
 </h1>`
+}
+function addQuery(str, str2) {
+    str2 = str2 ? str2 : str
+    return `<a href='/Roblox-Tutorials/?q=${str}'>${str2}</a>`
+}
+
+function loadService(db, data){
+    data.__customData.classType += ' Service'
+
+    $(`<style>${JSONtoCSS(data.__customData.css)}</style>`).appendTo($('head'))
+    $('main').html(getTemplate(data.nameDisplay, data.__customData.classType, data.content))
+    $('.main-classtype > h2').html(data.__customData.classType)
+}
+
+function loadClass(db, data){
+    data.__customData.classType += ' Class'
+
+    $(`<style>${JSONtoCSS(data.__customData.css)}</style>`).appendTo($('head'))
+    $('main').html(getTemplate(data.nameDisplay, data.__customData.classType, data.content))
+    $('.main-classtype > h2').html(data.__customData.classType)
+    
+    let stmt = db.prepare('SELECT * FROM `class_properties` WHERE `class`=?')
+    stmt.bind([data.name])
+
+    while(stmt.step()){
+        const propsData = stmt.getAsObject()
+        $('.main-properties').append(JQCreate(
+            'p',
+            `${propsData.name}: ${addQuery(propsData.type)}<br/>${propsData.description}`
+        ),'<hr/>')
+    }
+
+    stmt = db.prepare('SELECT * FROM `class_methods` WHERE `class`=?')
+    stmt.bind([data.name])
+
+    while(stmt.step()){
+        const metsData = stmt.getAsObject()
+
+        let params = metsData.parameters
+
+        if(metsData.parameters !== ''){
+            params = params.split(',').map(entry => {
+                entry = entry.replace(/ /ig,'')
+                let index = entry.indexOf(':')
+                return `${entry.substring(0,index+1)} ${addQuery(entry.substring(index+1))}`
+            }).join(', ')
+        }
+
+        let msg = `${metsData.name}(${params}): ${addQuery(metsData.returnType)}`
+        msg += metsData.yields == 1 ? ' - YIELDS<br/>' : '<br/>'
+        msg += metsData.description
+        
+        $('.main-methods').append(JQCreate(
+            'p',
+            msg
+        ),'<hr/>')
+    }
 }
 
 function loadWebsite(db, queryParams, filterParams, limitParams){
     if(!queryParams){
         if(filterParams && limitParams){
             let stmt = db.prepare('SELECT * FROM `pages`')
-            let ul = document.createElement('ul')
+            let ul = JQCreateList(false)
+
             while(stmt.step()){
-                let elem = document.createElement('li')
                 let res = stmt.get()
-                elem.innerHTML = `<a href='/Roblox-Tutorials/?q=${res[2]}'>${res[3]}</a>`
-                ul.append(elem)
+                ul.appendChild(JQCreateListItem(addQuery(res[2],res[3])))
             }
             $('main').append(ul)
             $('main').css('text-align','left')
@@ -47,21 +103,26 @@ function loadWebsite(db, queryParams, filterParams, limitParams){
     $(document).prop('title', `${obj.title} - Roblox Docs`)
 
     let css = cssToJSON(getPageCSS())
-    let classType = 'Shared class'
+    let classType = 'Shared'
 
     const type = obj.type.toUpperCase()
     if(type === 'SHARED') {
         css = setShared(css)
-        classType = 'Shared class'
+        classType = 'Shared'
     } else if(type == 'SERVER') {
         css = setServer(css)
-        classType = 'Server class'
+        classType = 'Server'
     } else if(type == 'CLIENT') {
         css = setClient(css)
-        classType = 'Client class'
+        classType = 'Client'
     } else throw Error('Unknown type!')
 
-    $(`<style>${JSONtoCSS(css)}</style>`).appendTo($('head'))
-    $('main').html(getTemplate(obj.nameDisplay, classType, obj.content))
-    $('.main-classtype > h2').html(classType)
+    obj.__customData = {
+        css: css,
+        type: classType
+    }
+
+    if(obj.pageType === 'CLASS') return loadClass(db, obj)
+    else if(obj.pageType == 'SERVICE') return loadService(db, obj)
+    else throw Error('Unknown page type!')
 }

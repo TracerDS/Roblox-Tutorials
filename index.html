@@ -8,10 +8,41 @@
     <link rel='preconnect' href='https://fonts.googleapis.com'>
     <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
     <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
+    <script src='https://code.jquery.com/jquery-3.6.3.min.js'></script>
     
     <link rel='stylesheet' href='./css/index.css'>
+
+    <script src='js/sql/sql-wasm.js'></script>
+    <script src='js/sql/init.js'></script>
+
+    <script src='js/css/cssJSON.js'></script>
+    <script src='js/css/templateCSS.js'></script>
+
+    <script src='js/pages/template.js'></script>
+    <script src='js/pages/website.js'></script>
 </head>
 <body>
+    <header>
+    </header>
+    <main>
+        <form action='' method='GET'>
+            <label for='search-page'>Search articles</label><br/>
+            <input type='search' id='search-page' name='q'><br/><br/>
+            <input type='submit' id='search-button' value='Search'>
+        </form>
+    </main>
+    <footer>
 
+    </footer>
+
+    <script>
+        startDB((db) => {
+            const urlParams = new URLSearchParams(window.location.search)
+            if(urlParams.get('q') === '') return
+            
+            $('main').html('')
+            loadWebsite(db, urlParams.get('q'))
+        })
+    </script>
 </body>
 </html>

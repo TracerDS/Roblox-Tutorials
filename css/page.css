@@ -1,0 +1,26 @@
+main {
+    text-align: left;
+    border-radius: 30px;
+    /* border: 5px solid rgb(117, 117, 255); */
+    width: auto;
+    padding: 20px;
+    background-color: #121319;
+    color: #bbb;
+}
+.main-header {
+    /* border-bottom: 5px solid rgb(117, 117, 255); */
+    display: flex;
+}
+
+.main-classname {
+    text-align: left;
+    width: 30%;
+    margin-left: 5%;
+    /* color: rgb(117, 117, 255) */
+}
+.main-classtype {
+    text-align: right;
+    margin-right: 5%;
+    /* color: rgb(117, 117, 255); */
+    flex: 1;
+}

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #bbb;
+}
+a:visited, a:link {
+    color: #70a9e4;
+    text-decoration: none;
+}
+a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+body {
+    background-color: #16181f;
+}
+
+main {
+    text-align: center;
+}
+#search-page {
+    background-color: rgb(122, 250, 122);
+    border-radius: 10px;
+    color: #000;
+}

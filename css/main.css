@@ -16,9 +16,31 @@ a:hover {
 body {
     background-color: #16181f;
 }
+header {
+    text-align: center;
+    background-color: #70a9e4;
+    margin-bottom: 5%;
+}
+.header-menu {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.header-menu li {
+    padding: 20px;
+}
+.header-menu a {
+    color: white;
+}
 
 main {
     text-align: center;
+}
+footer {
+    text-align: right;
+    margin-top: 20%;
 }
 #search-page {
     background-color: rgb(122, 250, 122);

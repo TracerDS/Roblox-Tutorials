@@ -3,8 +3,9 @@
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>RDocs</title>
+    <title>Roblox Wiki</title>
 
+    <link rel='icon' href='assets/icon.png'>
     <link rel='preconnect' href='https://fonts.googleapis.com'>
     <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
     <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
@@ -23,6 +24,10 @@
 </head>
 <body>
     <header>
+        <ul class='header-menu'>
+            <li><a href='/Roblox-Tutorials'>Homepage</a></li>
+            <li><a href='/Roblox-Tutorials/?filter=recent&limit=10'>Recent websites</a></li>
+        </ul>
     </header>
     <main>
         <form action='' method='GET'>
@@ -32,16 +37,20 @@
         </form>
     </main>
     <footer>
-
+        Copyright by: <a href='https://github.com/TracerDS' target='_blank'>Tracer</a><br/>
+        Roblox Wiki &copy; 2022
     </footer>
 
     <script>
-        startDB((db) => {
-            const urlParams = new URLSearchParams(window.location.search)
-            if(!urlParams.get('q')) return
-            
-            $('main').html('')
-            loadWebsite(db, urlParams.get('q'))
+        startDB(async (db) => {
+            const urlParams = await new URLSearchParams(window.location.search)
+            const queryParams = await urlParams.get('q')
+            const filterParams = await urlParams.get('filter')
+            const limitParams = await urlParams.get('limit')
+
+            if(!queryParams && !filterParams && !limitParams) return
+            await $('main').html('')
+            await loadWebsite(db, queryParams, filterParams, limitParams)
         })
     </script>
 </body>

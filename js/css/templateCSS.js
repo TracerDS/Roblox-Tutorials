@@ -19,12 +19,10 @@ main {
 .main-classname {
     text-align: left;
     width: 30%;
-    margin-left: 5%;
 }
 .main-classtype {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     text-align: right;
-    margin-right: 5%;
     flex: 1;
 }`
 }

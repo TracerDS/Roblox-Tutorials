@@ -38,7 +38,7 @@
     <script>
         startDB((db) => {
             const urlParams = new URLSearchParams(window.location.search)
-            if(urlParams.get('q') === '') return
+            if(!urlParams.get('q')) return
             
             $('main').html('')
             loadWebsite(db, urlParams.get('q'))

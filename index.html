@@ -52,7 +52,7 @@
 
             if(!queryParams && !filterParams && !limitParams) return
             await $('main').html('')
-            await loadWebsite(db, queryParams, filterParams, limitParams)
+            await loadWebsite(db, queryParams, filterParams, limitParams, window.location.hash)
         })
     </script>
 </body>

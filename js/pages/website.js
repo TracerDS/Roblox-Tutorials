@@ -8,17 +8,22 @@ function addQuery(str, str2) {
     str2 = str2 ? str2 : str
     return `<a href='/Roblox-Tutorials/?q=${str}'>${str2}</a>`
 }
+function addAnchor(str, id, str2) {
+    id = id ? id : str
+    str2 = str2 ? str2 : str
+    return `<a href='#${str}' id='${id}'>${str2}</a>`
+}
 
-function loadService(db, data, type){
-    data.__customData.classType = `${type} Service`
+function loadService(db, data){
+    data.__customData.classType += ` Service`
 
     $(`<style>${JSONtoCSS(data.__customData.css)}</style>`).appendTo($('head'))
     $('main').html(getTemplate(data.nameDisplay, data.__customData.classType, data.content))
     $('.main-classtype > h2').html(data.__customData.classType)
 }
 
-function loadClass(db, data, type){
-    data.__customData.classType = `${type} Class`
+function loadClass(db, data){
+    data.__customData.classType += ` Class`
 
     $(`<style>${JSONtoCSS(data.__customData.css)}</style>`).appendTo($('head'))
     $('main').html(getTemplate(data.nameDisplay, data.__customData.classType, data.content))
@@ -31,7 +36,7 @@ function loadClass(db, data, type){
         const propsData = stmt.getAsObject()
         $('.main-properties').append(JQCreate(
             'p',
-            `${propsData.name}: ${addQuery(propsData.type)}<br/>${propsData.description}`
+            `${addAnchor(propsData.name)}: ${addQuery(propsData.type)}<br/>${propsData.description}`
         ),'<hr/>')
     }
 
@@ -51,7 +56,7 @@ function loadClass(db, data, type){
             }).join(', ')
         }
 
-        let msg = `${metsData.name}(${params}): ${addQuery(metsData.returnType)}`
+        let msg = `${addAnchor(metsData.name)}(${params}): ${addQuery(metsData.returnType)}`
         msg += metsData.yields == 1 ? ' - YIELDS<br/>' : '<br/>'
         msg += metsData.description
         
@@ -62,7 +67,7 @@ function loadClass(db, data, type){
     }
 }
 
-function loadWebsite(db, queryParams, filterParams, limitParams){
+function loadWebsite(db, queryParams, filterParams, limitParams, hash){
     if(!queryParams){
         if(filterParams && limitParams){
             let stmt = db.prepare('SELECT * FROM `pages`')
@@ -119,10 +124,12 @@ function loadWebsite(db, queryParams, filterParams, limitParams){
 
     obj.__customData = {
         css: css,
-        type: classType
+        classType: classType
     }
 
-    if(obj.pageType === 'CLASS') return loadClass(db, obj, classType)
-    else if(obj.pageType == 'SERVICE') return loadService(db, obj, classType)
+    if(obj.pageType === 'CLASS') loadClass(db, obj)
+    else if(obj.pageType == 'SERVICE') loadService(db, obj)
     else throw Error('Unknown page type!')
+
+    if(hash) $(hash)[0].scrollIntoView()
 }
